@@ -1,0 +1,32 @@
+sudo dnf install gcc gcc-c++ libffi-devel python3-devel python3-pip python3-wheel openssl-devel cyrus-sasl-devel openldap-dev
+mkdir superset
+cd superset/
+python3 -m venv superset-env
+source superset-env/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install apache-superset
+cd superset-env/
+dnf install SQLite
+touch /root/superset/superset/superset-env/db/superset.db
+mkdir db
+cd db/
+mkdir conf
+cd conf/
+vi superset_config.py
+export SUPERSET_CONFIG_PATH=~/superset/superset-env/conf/superset_config.py
+chmod +x ~/superset/superset-env/conf/superset_config.py
+ls -lart ~/superset/superset-env/conf/superset_config.py
+export SUPERSET_CONFIG_PATH=~/superset/superset-env/conf/superset_config.py
+openssl rand -base64 42
+export FLASK_APP="superset:create_app(superset_app_root='/analytics')"
+export FLASK_APP=superset
+superset db upgrade
+pip install "sqlalchemy<1.4"
+pip install dataclasses
+pip uninstall cryptography pyopenssl
+pip install cryptography==38.0.4 pyopenssl==22.1.0
+superset db upgrade
+superset init
+export FLASK_APP=superset
+superset fab create-admin
+superset run -h 0.0.0.0 -p 8081 --with-threads --reload --debugger
